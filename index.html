@@ -605,33 +605,28 @@ ${kommunikation}/5
 ÖVRIGT
 ${ovrigt}`;
 
-```
-        // Telefonnummer
-        const phoneNumber = "+46733484197";
+// Bygg ihop meddelandet
+            let msg = `Utvärdering fotboll från ${namn}\n\n`;
+            msg += `Trivsel i laget (1-5): ${trivsel}\n`;
+            msg += `Stämning lagkamrater (1-5): ${lagkamrater}\n`;
+            msg += `Träningar (1-5): ${traningScale}\n`;
+            msg += `Tankar om träning: ${traningText}\n`;
+            msg += `Matcher (1-5): ${matchScale}\n`;
+            msg += `Om tränarna: ${tranare}\n`;
+            msg += `Övrigt: ${ovrigt}`;
 
-        // Koda SMS-texten
-        const encodedMsg = encodeURIComponent(msg);
+            // Gör om texten så den fungerar i en länk
+            const encodedMsg = encodeURIComponent(msg);
+            const phoneNumber = "0733484197";
 
+            // Kontrollera om användaren har iPhone (iOS) eller Android
+            // iOS använder ibland &body= medan Android använder ?body=
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const separator = isIOS ? '&' : '?';
 
-        // Försök identifiera iOS
-        const isIOS =
-            /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-            (navigator.platform === 'MacIntel' &&
-             navigator.maxTouchPoints > 1);
-
-
-        // Skapa SMS-länk
-        const smsLink = isIOS
-            ? `sms:${phoneNumber}&body=${encodedMsg}`
-            : `sms:${phoneNumber}?body=${encodedMsg}`;
-
-
-        // Öppna SMS
-        window.location.href = smsLink;
-    }
-
-</script>
-```
-
+            // Öppna SMS-appen
+            window.location.href = `sms:${phoneNumber}${separator}body=${encodedMsg}`;
+        }
+    </script>
 </body>
 </html>
