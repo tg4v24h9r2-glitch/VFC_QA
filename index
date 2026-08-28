@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spelarutvärdering</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f9f4;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+        }
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            color: #555;
+        }
+        .form-group {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        .rating {
+            display: flex;
+            justify-content: space-between;
+            max-width: 300px;
+            margin-top: 10px;
+        }
+        .rating label {
+            font-weight: normal;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+            cursor: pointer;
+        }
+        .rating input {
+            margin-top: 5px;
+            transform: scale(1.3);
+        }
+        button {
+            display: block;
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Spelarutvärdering ⚽️</h1>
+    <p class="intro">Vi vill veta vad du tycker! Fyll i formuläret nedan. När du är klar skapas ett SMS automatiskt med dina svar.</p>
+
+    <div class="form-group">
+        <label for="namn">Ditt namn:</label>
+        <input type="text" id="namn" placeholder="Skriv ditt namn här...">
+    </div>
+
+    <div class="form-group">
+        <label>Hur trivs du i fotbollslaget generellt? (1 = Inte alls bra, 5 = Jättebra)</label>
+        <div class="rating">
+            <label>1 <input type="radio" name="trivsel" value="1"></label>
+            <label>2 <input type="radio" name="trivsel" value="2"></label>
+            <label>3 <input type="radio" name="trivsel" value="3"></label>
+            <label>4 <input type="radio" name="trivsel" value="4"></label>
+            <label>5 <input type="radio" name="trivsel" value="5"></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Vad tycker du om stämningen bland lagkamraterna? (1-5)</label>
+        <div class="rating">
+            <label>1 <input type="radio" name="lagkamrater" value="1"></label>
+            <label>2 <input type="radio" name="lagkamrater" value="2"></label>
+            <label>3 <input type="radio" name="lagkamrater" value="3"></label>
+            <label>4 <input type="radio" name="lagkamrater" value="4"></label>
+            <label>5 <input type="radio" name="lagkamrater" value="5"></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Hur roliga och utvecklande är träningarna? (1-5)</label>
+        <div class="rating">
+            <label>1 <input type="radio" name="traningScale" value="1"></label>
+            <label>2 <input type="radio" name="traningScale" value="2"></label>
+            <label>3 <input type="radio" name="traningScale" value="3"></label>
+            <label>4 <input type="radio" name="traningScale" value="4"></label>
+            <label>5 <input type="radio" name="traningScale" value="5"></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="traningText">Vad är det bästa med träningarna, och vad kan vi göra bättre?</label>
+        <textarea id="traningText" placeholder="Berätta med egna ord..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Hur upplever du matcherna? (1-5)</label>
+        <div class="rating">
+            <label>1 <input type="radio" name="matchScale" value="1"></label>
+            <label>2 <input type="radio" name="matchScale" value="2"></label>
+            <label>3 <input type="radio" name="matchScale" value="3"></label>
+            <label>4 <input type="radio" name="matchScale" value="4"></label>
+            <label>5 <input type="radio" name="matchScale" value="5"></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="tranare">Vad tycker du om oss tränare? (Feedback, peppning, taktik mm)</label>
+        <textarea id="tranare" placeholder="Dina tankar om tränarna..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="ovrigt">Har du några övriga tankar eller förslag till laget?</label>
+        <textarea id="ovrigt" placeholder="Skriv här..."></textarea>
+    </div>
+
+    <button onclick="sendSMS()">Kopiera svar och skicka SMS 📱</button>
+
+    <script>
+        function sendSMS() {
+            // Hämta värden från textfälten
+            const namn = document.getElementById('namn').value || 'Inget namn angett';
+            const traningText = document.getElementById('traningText').value || 'Inget svar';
+            const tranare = document.getElementById('tranare').value || 'Inget svar';
+            const ovrigt = document.getElementById('ovrigt').value || 'Inget svar';
+
+            // Hämta värden från 1-5 frågorna
+            const trivsel = document.querySelector('input[name="trivsel"]:checked')?.value || '-';
+            const lagkamrater = document.querySelector('input[name="lagkamrater"]:checked')?.value || '-';
+            const traningScale = document.querySelector('input[name="traningScale"]:checked')?.value || '-';
+            const matchScale = document.querySelector('input[name="matchScale"]:checked')?.value || '-';
+
+            // Bygg ihop meddelandet
+            let msg = `Utvärdering fotboll från ${namn}\n\n`;
+            msg += `Trivsel i laget (1-5): ${trivsel}\n`;
+            msg += `Stämning lagkamrater (1-5): ${lagkamrater}\n`;
+            msg += `Träningar (1-5): ${traningScale}\n`;
+            msg += `Tankar om träning: ${traningText}\n`;
+            msg += `Matcher (1-5): ${matchScale}\n`;
+            msg += `Om tränarna: ${tranare}\n`;
+            msg += `Övrigt: ${ovrigt}`;
+
+            // Gör om texten så den fungerar i en länk
+            const encodedMsg = encodeURIComponent(msg);
+            const phoneNumber = "0733484197";
+
+            // Kontrollera om användaren har iPhone (iOS) eller Android
+            // iOS använder ibland &body= medan Android använder ?body=
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const separator = isIOS ? '&' : '?';
+
+            // Öppna SMS-appen
+            window.location.href = `sms:${phoneNumber}${separator}body=${encodedMsg}`;
+        }
+    </script>
+</body>
+</html>
