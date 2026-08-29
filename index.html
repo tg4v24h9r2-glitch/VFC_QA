@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spelarutvärdering</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f9f4;
@@ -18,439 +15,212 @@
             max-width: 650px;
             margin: 0 auto;
         }
-
-        h1 {
-            text-align: center;
-            color: #2e7d32;
-            margin-bottom: 8px;
-        }
-
-        .intro {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 0.95em;
-            color: #555;
-        }
-
+        h1 { text-align: center; color: #2e7d32; margin-bottom: 8px; }
+        .intro { text-align: center; margin-bottom: 25px; font-size: 0.95em; color: #555; }
         .form-group {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            margin-bottom: 18px;
+            background: #fff; padding: 20px; border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 18px;
         }
-
-        label.question {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 12px;
-            color: #2e7d32;
+        label.question { font-weight: bold; display: block; margin-bottom: 12px; color: #2e7d32; }
+        input[type="text"], textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc;
+            border-radius: 6px; font-family: inherit; font-size: 16px;
         }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 16px;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #2e7d32;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        .rating {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            gap: 5px;
-        }
-
-        .rating-option {
-            flex: 1;
-            text-align: center;
-        }
-
+        input[type="text"]:focus, textarea:focus { outline: none; border-color: #2e7d32; }
+        textarea { resize: vertical; min-height: 90px; }
+        .rating { display: flex; justify-content: space-between; margin-top: 10px; gap: 5px; }
+        .rating-option { flex: 1; text-align: center; }
         .rating-option label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            font-weight: bold;
-            color: #333;
-            padding: 8px 2px;
-            border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; font-weight: bold; color: #333; padding: 8px 2px; border-radius: 6px;
         }
-
-        .rating-option input {
-            margin-top: 7px;
-            transform: scale(1.3);
-            cursor: pointer;
-        }
-
-        .rating-option label:hover {
-            background-color: #f1f8f1;
-        }
-
-        .scale-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8em;
-            color: #777;
-            margin-top: 5px;
-        }
-
-        .required {
-            color: #d32f2f;
-        }
-
+        .rating-option input { margin-top: 7px; transform: scale(1.3); cursor: pointer; }
+        .rating-option label:hover { background-color: #f1f8f1; }
+        .scale-info { display: flex; justify-content: space-between; font-size: 0.8em; color: #777; margin-top: 5px; }
+        .required { color: #d32f2f; }
         button {
-            display: block;
-            width: 100%;
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 16px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
+            display: block; width: 100%; background-color: #2e7d32; color: white;
+            border: none; padding: 16px; font-size: 1.1em; font-weight: bold;
+            border-radius: 10px; cursor: pointer; margin-top: 10px; transition: background 0.3s;
         }
-
-        button:hover {
-            background-color: #1b5e20;
-        }
-
-        .note {
-            text-align: center;
-            font-size: 0.8em;
-            color: #777;
-            margin-top: 12px;
-        }
-
+        button:hover { background-color: #1b5e20; }
+        button:disabled { background-color: #9e9e9e; cursor: not-allowed; }
         .success {
-            display: none;
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
+            display: none; background: #e8f5e9; color: #2e7d32; padding: 15px;
+            border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold; border: 1px solid #c8e6c9;
         }
     </style>
 </head>
 <body>
 
-<h1>Spelarutvärdering</h1>
+<h1>Spelarutvärdering P2011</h1>
 
 <p class="intro">
-    Vi vill veta vad du tycker!
-    Svara så ärligt du kan – det finns inga rätt eller fel svar.
-    Dina svar hjälper oss tränare att göra laget och träningarna bättre.
+    Vi vill veta vad du tycker! Svara så ärligt du kan – det finns inga rätt eller fel svar.
+    Dina svar skickas direkt till tränarna.
 </p>
 
 <div id="successMessage" class="success">
-    Tack för din utvärdering!
+    ✅ Tack för din utvärdering! Dina svar har skickats in.
 </div>
 
+<div id="formContainer">
+    <!-- NAMN -->
+    <div class="form-group">
+        <label class="question" for="namn">Ditt namn <span class="required">*</span></label>
+        <input type="text" id="namn" placeholder="Skriv ditt namn här..." required>
+    </div>
 
-<!-- NAMN -->
+    <!-- TRIVSEL -->
+    <div class="form-group">
+        <label class="question">Hur trivs du i fotbollslaget generellt? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="trivsel" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="trivsel" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="trivsel" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="trivsel" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="trivsel" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls bra</span><span>Jättebra</span></div>
+    </div>
 
-<div class="form-group">
-    <label class="question" for="namn">
-        Ditt namn <span class="required">*</span>
-    </label>
+    <!-- LAGKAMRATER -->
+    <div class="form-group">
+        <label class="question">Hur tycker du att stämningen är bland lagkamraterna? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="lagkamrater" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="lagkamrater" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="lagkamrater" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="lagkamrater" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="lagkamrater" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls bra</span><span>Jättebra</span></div>
+    </div>
 
-    <input
-        type="text"
-        id="namn"
-        placeholder="Skriv ditt namn här..."
-        required
-    >
+    <!-- DELAKTIGHET -->
+    <div class="form-group">
+        <label class="question">Känner du dig som en viktig del av laget? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="delaktighet" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="delaktighet" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="delaktighet" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="delaktighet" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="delaktighet" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls</span><span>Absolut</span></div>
+    </div>
+
+    <!-- TRÄNINGAR -->
+    <div class="form-group">
+        <label class="question">Hur roliga och utvecklande är träningarna? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="traning" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="traning" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="traning" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="traning" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="traning" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls</span><span>Jätteroliga</span></div>
+    </div>
+
+    <!-- UTVECKLING -->
+    <div class="form-group">
+        <label class="question">Hur mycket tycker du att du utvecklas som fotbollsspelare? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="utveckling" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="utveckling" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="utveckling" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="utveckling" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="utveckling" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls</span><span>Mycket</span></div>
+    </div>
+
+    <!-- MATCHER -->
+    <div class="form-group">
+        <label class="question">Hur upplever du matcherna? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="matcher" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="matcher" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="matcher" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="matcher" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="matcher" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls bra</span><span>Jättebra</span></div>
+    </div>
+
+    <!-- SPELTID -->
+    <div class="form-group">
+        <label class="question">Hur tycker du att speltiden på matcher fungerar? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="speltid" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="speltid" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="speltid" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="speltid" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="speltid" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Inte alls bra</span><span>Jättebra</span></div>
+    </div>
+
+    <!-- TRÄNINGSTEXT -->
+    <div class="form-group">
+        <label class="question" for="traningText">Vad är det bästa med träningarna, och vad kan vi göra bättre?</label>
+        <textarea id="traningText" placeholder="Berätta med egna ord..."></textarea>
+    </div>
+
+    <!-- VAD VILL DU TRÄNA PÅ -->
+    <div class="form-group">
+        <label class="question" for="merTraning">Vad skulle du vilja träna mer på?</label>
+        <textarea id="merTraning" placeholder="Till exempel teknik, avslut, passningar, försvar, kondition..."></textarea>
+    </div>
+
+    <!-- TRÄNARE -->
+    <div class="form-group">
+        <label class="question" for="tranare">Vad tycker du om oss tränare?<br><span style="font-size:0.85em;font-weight:normal;color:#555;">Feedback, peppning, taktik, instruktioner mm.</span></label>
+        <textarea id="tranare" placeholder="Dina tankar om tränarna..."></textarea>
+    </div>
+
+    <!-- KOMMUNIKATION -->
+    <div class="form-group">
+        <label class="question">Hur tycker du att kommunikationen från tränarna fungerar? <span class="required">*</span></label>
+        <div class="rating">
+            <div class="rating-option"><label>1<input type="radio" name="kommunikation" value="1"></label></div>
+            <div class="rating-option"><label>2<input type="radio" name="kommunikation" value="2"></label></div>
+            <div class="rating-option"><label>3<input type="radio" name="kommunikation" value="3"></label></div>
+            <div class="rating-option"><label>4<input type="radio" name="kommunikation" value="4"></label></div>
+            <div class="rating-option"><label>5<input type="radio" name="kommunikation" value="5"></label></div>
+        </div>
+        <div class="scale-info"><span>Fungerar inte</span><span>Fungerar jättebra</span></div>
+    </div>
+
+    <!-- ÖVRIGT -->
+    <div class="form-group">
+        <label class="question" for="ovrigt">Har du några övriga tankar eller förslag till laget?</label>
+        <textarea id="ovrigt" placeholder="Skriv här..."></textarea>
+    </div>
+
+    <button id="submitBtn" onclick="submitForm()">Skicka in svar ⚽️</button>
 </div>
-
-
-<!-- TRIVSEL -->
-
-<div class="form-group">
-    <label class="question">
-        Hur trivs du i fotbollslaget generellt?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="trivsel" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="trivsel" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="trivsel" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="trivsel" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="trivsel" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls bra</span>
-        <span>Jättebra</span>
-    </div>
-</div>
-
-
-<!-- LAGKAMRATER -->
-
-<div class="form-group">
-    <label class="question">
-        Hur tycker du att stämningen är bland lagkamraterna?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="lagkamrater" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="lagkamrater" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="lagkamrater" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="lagkamrater" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="lagkamrater" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls bra</span>
-        <span>Jättebra</span>
-    </div>
-</div>
-
-
-<!-- DELAKTIGHET -->
-
-<div class="form-group">
-    <label class="question">
-        Känner du dig som en viktig del av laget?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="delaktighet" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="delaktighet" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="delaktighet" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="delaktighet" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="delaktighet" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls</span>
-        <span>Absolut</span>
-    </div>
-</div>
-
-
-<!-- TRÄNINGAR -->
-
-<div class="form-group">
-    <label class="question">
-        Hur roliga och utvecklande är träningarna?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="traning" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="traning" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="traning" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="traning" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="traning" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls</span>
-        <span>Jätteroliga</span>
-    </div>
-</div>
-
-
-<!-- UTVECKLING -->
-
-<div class="form-group">
-    <label class="question">
-        Hur mycket tycker du att du utvecklas som fotbollsspelare?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="utveckling" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="utveckling" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="utveckling" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="utveckling" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="utveckling" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls</span>
-        <span>Mycket</span>
-    </div>
-</div>
-
-
-<!-- MATCHER -->
-
-<div class="form-group">
-    <label class="question">
-        Hur upplever du matcherna?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="matcher" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="matcher" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="matcher" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="matcher" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="matcher" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls bra</span>
-        <span>Jättebra</span>
-    </div>
-</div>
-
-
-<!-- SPELTID -->
-
-<div class="form-group">
-    <label class="question">
-        Hur tycker du att speltiden på matcher fungerar?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="speltid" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="speltid" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="speltid" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="speltid" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="speltid" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Inte alls bra</span>
-        <span>Jättebra</span>
-    </div>
-</div>
-
-
-<!-- TRÄNINGSTEXT -->
-
-<div class="form-group">
-    <label class="question" for="traningText">
-        Vad är det bästa med träningarna,
-        och vad kan vi göra bättre?
-    </label>
-
-    <textarea
-        id="traningText"
-        placeholder="Berätta med egna ord..."
-    ></textarea>
-</div>
-
-
-<!-- VAD VILL DU TRÄNA PÅ -->
-
-<div class="form-group">
-    <label class="question" for="merTraning">
-        Vad skulle du vilja träna mer på?
-    </label>
-
-    <textarea
-        id="merTraning"
-        placeholder="Till exempel teknik, avslut, passningar, försvar, kondition..."
-    ></textarea>
-</div>
-
-
-<!-- TRÄNARE -->
-
-<div class="form-group">
-    <label class="question" for="tranare">
-        Vad tycker du om oss tränare?
-        <br>
-        Feedback, peppning, taktik, instruktioner mm.
-    </label>
-
-    <textarea
-        id="tranare"
-        placeholder="Dina tankar om tränarna..."
-    ></textarea>
-</div>
-
-
-<!-- KOMMUNIKATION -->
-
-<div class="form-group">
-    <label class="question">
-        Hur tycker du att kommunikationen från tränarna fungerar?
-        <span class="required">*</span>
-    </label>
-
-    <div class="rating">
-        <div class="rating-option"><label>1<input type="radio" name="kommunikation" value="1"></label></div>
-        <div class="rating-option"><label>2<input type="radio" name="kommunikation" value="2"></label></div>
-        <div class="rating-option"><label>3<input type="radio" name="kommunikation" value="3"></label></div>
-        <div class="rating-option"><label>4<input type="radio" name="kommunikation" value="4"></label></div>
-        <div class="rating-option"><label>5<input type="radio" name="kommunikation" value="5"></label></div>
-    </div>
-
-    <div class="scale-info">
-        <span>Fungerar inte</span>
-        <span>Fungerar jättebra</span>
-    </div>
-</div>
-
-
-<!-- ÖVRIGT -->
-
-<div class="form-group">
-    <label class="question" for="ovrigt">
-        Har du några övriga tankar eller förslag till laget?
-    </label>
-
-    <textarea
-        id="ovrigt"
-        placeholder="Skriv här..."
-    ></textarea>
-</div>
-
-
-<button onclick="copyAnswers()">
-    Kopiera mina svar 📋
-</button>
-
-<p class="note">
-    När du trycker på knappen kopieras dina svar. Öppna sedan SMS-appen och klistra in texten till nummer 0733484197.
-</p>
 
 <script>
+    // Byt ut texten nedan mot din riktiga Web App URL från Google Apps Script!
+    const WEB_APP_URL = https://script.google.com/macros/s/AKfycbyXlClKTo61Jkvd3tSISwGAHFxuQPLDSDGs1UQxl9dvz1G_TsZ_1AwM6bK36fIV_MKW/exec; 
+
     function getRating(name) {
-        const selected = document.querySelector(
-            `input[name="${name}"]:checked`
-        );
+        const selected = document.querySelector(`input[name="${name}"]:checked`);
         return selected ? selected.value : null;
     }
 
-    function copyAnswers() {
+    function submitForm() {
+        const btn = document.getElementById('submitBtn');
         const namn = document.getElementById('namn').value.trim();
 
-        // Kontrollera namn
         if (!namn) {
             alert('Skriv ditt namn först.');
             document.getElementById('namn').focus();
             return;
         }
 
-        // Hämta alla betyg
         const trivsel = getRating('trivsel');
         const lagkamrater = getRating('lagkamrater');
         const delaktighet = getRating('delaktighet');
@@ -460,48 +230,55 @@
         const speltid = getRating('speltid');
         const kommunikation = getRating('kommunikation');
 
-        // Kontrollera obligatoriska frågor
-        if (
-            !trivsel || !lagkamrater || !delaktighet || !traning ||
-            !utveckling || !matcher || !speltid || !kommunikation
-        ) {
-            alert('Du behöver svara på alla frågor med 1–5 innan du kopierar utvärderingen.');
+        if (!trivsel || !lagkamrater || !delaktighet || !traning || !utveckling || !matcher || !speltid || !kommunikation) {
+            alert('Du behöver svara på alla frågor med 1–5 (med röd stjärna) innan du skickar.');
             return;
         }
 
-        // Hämta fritext
-        const traningText = document.getElementById('traningText').value.trim() || 'Inget svar';
-        const merTraning = document.getElementById('merTraning').value.trim() || 'Inget svar';
-        const tranare = document.getElementById('tranare').value.trim() || 'Inget svar';
-        const ovrigt = document.getElementById('ovrigt').value.trim() || 'Inget svar';
+        // Samla ihop all data
+        const payload = {
+            namn: namn,
+            trivsel: trivsel,
+            lagkamrater: lagkamrater,
+            delaktighet: delaktighet,
+            traning: traning,
+            utveckling: utveckling,
+            matcher: matcher,
+            speltid: speltid,
+            kommunikation: kommunikation,
+            traningText: document.getElementById('traningText').value.trim() || '-',
+            merTraning: document.getElementById('merTraning').value.trim() || '-',
+            tranare: document.getElementById('tranare').value.trim() || '-',
+            ovrigt: document.getElementById('ovrigt').value.trim() || '-'
+        };
 
-        // Bygg texten som ska kopieras
-        let msg = `SPELARUTVÄRDERING\n`;
-        msg += `Namn: ${namn}\n\n`;
-        msg += `TRIVSEL\n`;
-        msg += `Trivsel i laget: ${trivsel}/5\n`;
-        msg += `Stämning bland lagkamrater: ${lagkamrater}/5\n`;
-        msg += `Känner mig delaktig i laget: ${delaktighet}/5\n\n`;
-        msg += `FOTBOLL\n`;
-        msg += `Träningarna: ${traning}/5\n`;
-        msg += `Min utveckling: ${utveckling}/5\n`;
-        msg += `Matcherna: ${matcher}/5\n`;
-        msg += `Speltid: ${speltid}/5\n\n`;
-        msg += `TRÄNINGAR\n${traningText}\n\n`;
-        msg += `VILL TRÄNA MER PÅ\n${merTraning}\n\n`;
-        msg += `TRÄNARE\n${tranare}\n\n`;
-        msg += `KOMMUNIKATION\n${kommunikation}/5\n\n`;
-        msg += `ÖVRIGT\n${ovrigt}`;
+        // Ändra knappen till "Skickar..."
+        btn.innerText = "Skickar svar...";
+        btn.disabled = true;
 
-        // Kopiera texten till urklipp (Clipboard API)
-        navigator.clipboard.writeText(msg).then(() => {
-            // Visa bekräftelse i gränssnittet också om vi vill
-            document.getElementById('successMessage').style.display = 'block';
-            
-            alert("✅ Dina svar är nu kopierade! \n\nÖppna dina SMS, klistra in texten och skicka till 0733484197.");
-        }).catch(err => {
-            // Om telefonens webbläsare blockerar automatisk kopiering
-            alert("Det gick inte att kopiera automatiskt. Markera och kopiera dina svar här nedan:\n\n" + msg);
+        // Skicka datan till Google Sheets
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8' // Viktigt för Google Apps Script
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === "success") {
+                // Göm hela formuläret och visa tack-meddelandet
+                document.getElementById('formContainer').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                window.scrollTo(0, 0);
+            } else {
+                throw new Error("Kunde inte spara");
+            }
+        })
+        .catch(error => {
+            alert("Något gick fel när svaren skulle skickas. Vänligen försök igen.");
+            btn.innerText = "Skicka in svar ⚽️";
+            btn.disabled = false;
         });
     }
 </script>
